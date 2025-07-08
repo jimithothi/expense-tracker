@@ -1,0 +1,57 @@
+
+### List Expenses (with optional filters)
+GET http://localhost:5000/expenses?user_id=1&category=1&start_date=2024-06-01&end_date=2024-06-30 
+
+### Add Expense
+POST http://localhost:5000/expenses
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "category": 1,
+  "amount": 123.45,
+  "date": "2024-07-02",
+  "description": "Groceries"
+}
+
+### Update Expense
+PUT http://localhost:5000/expenses/1
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "category": 2,
+  "amount": 150.00,
+  "date": "2024-06-02",
+  "description": "Updated groceries"
+}
+
+### Delete Expense
+DELETE http://localhost:5000/expenses/1
+
+### Get Top 3 Days by Expenditure per User
+GET http://localhost:5000/stats/top-days
+
+### Get % Change in Total Expenditure from Previous Month per User
+GET http://localhost:5000/stats/monthly-change
+
+### Predict Next Month's Total Expenditure per User
+GET http://localhost:5000/stats/predict-next-month
+
+### Add User
+POST http://localhost:5000/user
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe1@example.com",
+  "status": "active"
+}
+
+### Add Category
+POST http://localhost:5000/category
+Content-Type: application/json
+
+{
+  "name": "Utilities"
+}
