@@ -13,9 +13,11 @@ export interface InsertResult {
  */
 export async function addCategory(category: Omit<Category, 'id'>): Promise<InsertResult> {
   const { name } = category;
+  // Insert the new category into the Categories table
   const [result] = await pool.execute(
     'INSERT INTO Categories (name) VALUES (?)',
     [name]
   );
+  // Return the insertId of the new category
   return { insertId: (result as InsertResult).insertId };
 } 

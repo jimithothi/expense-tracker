@@ -6,10 +6,12 @@ import statsRouter from './routes/stats';
 import userRouter from './routes/user';
 import categoryRouter from './routes/category';
 
+// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-// Security middleware
+
+// Security middleware: Enable CORS with allowed origins and headers
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "*",
@@ -18,18 +20,29 @@ app.use(
   })
 );
 
+// Parse incoming JSON requests with a size limit
 app.use(express.json({ limit: "10kb" }));
 
+// Health check endpoint
+/**
+ * GET /
+ * Returns a simple message to indicate the API is live.
+ */
 app.get('/', (req: Request, res: Response) => {
   res.send('API Live');
 });
 
+// Register route handlers
 app.use('/expenses', expensesRouter);
 app.use('/stats', statsRouter);
 app.use('/user', userRouter);
 app.use('/category', categoryRouter);
 
-// Centralized error handler
+// Centralized error handler for all routes
+/**
+ * Error handling middleware.
+ * Handles validation errors and generic server errors.
+ */
 app.use((err: any, req: Request, res: Response, next: Function) => {
   if (err.status === 400 && err.errors) {
     return res.status(400).json({ errors: err.errors });
@@ -37,6 +50,10 @@ app.use((err: any, req: Request, res: Response, next: Function) => {
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
+/**
+ * Initializes the server and listens on the specified port.
+ * Logs database connection status and server start.
+ */
 (async () => {
   try {
     console.log("Database connected successfully.");
