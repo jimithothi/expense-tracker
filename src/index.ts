@@ -29,6 +29,14 @@ app.use('/stats', statsRouter);
 app.use('/user', userRouter);
 app.use('/category', categoryRouter);
 
+// Centralized error handler
+app.use((err: any, req: Request, res: Response, next: Function) => {
+  if (err.status === 400 && err.errors) {
+    return res.status(400).json({ errors: err.errors });
+  }
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+});
+
 (async () => {
   try {
     console.log("Database connected successfully.");
